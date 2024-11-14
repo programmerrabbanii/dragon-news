@@ -17,7 +17,7 @@ const Header = () => {
        <div className='flex flex-col justify-center items-center  mt-5'>
          <div>
          <img src={headeLogo} alt="" />
-         <h3 className='text-center mt-2 text-base text-gray-500'>Journalism Without Fear or Favour</h3>
+         <h3 className='text-center mt-2 text-base text-gray-500 font-poppins'>Journalism Without Fear or Favour</h3>
 
          <p className='text-center mt-2 text-gray-600'>{currentTime}</p>
         </div>
