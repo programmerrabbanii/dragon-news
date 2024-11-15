@@ -1,27 +1,68 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import Swal from 'sweetalert2';
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
+
 const Register = () => {
-  const {createUSer}=useContext(AuthContext)
-  const handlerSubmitLogin=e=>{
+  const navigate = useNavigate();
+  const { createUSer,updateUserProfile,setUser } = useContext(AuthContext);
+
+  const handlerSubmitLogin = (e) => {
     e.preventDefault();
-    const form=new FormData(e.target);
-    const name= form.get("name");
-    const email= form.get("email")
-    const photo= form.get("photo")
-    const password=form.get("password")
-    console.log({name,email,photo,password});
-    createUSer(email,password)
-    .then((result)=>{
-      console.log(result.user);
-      
-    })
-    .catch(errro=>{
-      console.log("Errro", errro);
-    })
+    const form = new FormData(e.target);
+    const name = form.get("name");
+    const email = form.get("email");
+    const photoURL = form.get("photoURL");
+    const password = form.get("password");
 
+    const passwordRegex = /^(?=.*[!@#$%^&*])(?=.{6,})/; 
+    if (!passwordRegex.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Password",
+        text: "Password must be at least 6 characters long and include a special character!",
+      });
+      return;
+    }
 
-  }
+    createUSer(email, password)
+      .then((result) => {
+        setUser(result?.user)
+        console.log(result);
+        updateUserProfile({
+          displayName: name, photoURL: photoURL,
+        }).then(()=>{
+         navigate("/")
+
+        }).catch(err=>{
+          console.log(err);
+        })
+        navigate('/auth/login');
+        Swal.fire({
+          title: "Register Successfully, thank you!",
+          icon: "success",
+          showClass: {
+            popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `
+          },
+          hideClass: {
+            popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `
+          }
+        });
+      })
+      .catch((error) => {
+        console.log("Error", error);
+       
+      });
+  };
+
   return (
     <div className="card bg-base-100 w-6/12 mx-auto py-6  shrink-0 shadow-2xl">
       <h1 className="text-3xl font-bold text-center">Register your account</h1>
@@ -44,7 +85,7 @@ const Register = () => {
             <span className="label-text">PhotoURL</span>
           </label>
           <input
-            name="photo"
+            name="photoURL"
             type="text"
             placeholder="PhotoURL"
             className="input input-bordered"
@@ -82,9 +123,9 @@ const Register = () => {
           </label>
         </div>
         <div className="form-control">
-          <label className="label justify-start gap-3 cursor-pointer ">
+          <label className="label justify-start gap-3 cursor-pointer">
             <span className="label-text">Accept Term & Conditions</span>
-            <input type="checkbox"  className="checkbox" />
+            <input type="checkbox" className="checkbox" />
           </label>
         </div>
         <div className="form-control mt-6">

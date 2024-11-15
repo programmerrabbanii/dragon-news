@@ -9,7 +9,7 @@ const NavBar = () => {
             <div>{user && user.email}</div>
             <div>
                 <ul className='flex'>
-                   <li className='ml-3 text-lg'><Link> Home</Link></li> 
+                   <li className='ml-3 text-lg'><Link to="/"> Home</Link></li> 
                    <li className='ml-3 text-lg'><Link> About</Link></li>
                    <li className='ml-3 text-lg'><Link> Career</Link></li>
                     
@@ -17,7 +17,14 @@ const NavBar = () => {
                 </ul> 
             </div>
             <div className="flex gap-2">
-                <img src={userImg} alt="" />
+
+                {
+                    user&& user?.email? <div>
+                        <img className='w-14 h-14 rounded-full' src={user?.photoURL} alt="" />
+                        
+                    </div> :<img src={userImg} alt="" />
+
+                }
                 {
                     user && user?.email ? <button onClick={logOutUser} className='btn rounded-none bg-black  text-white'>Log Out</button> : <Link to="/auth/login" className='btn rounded-none bg-black  text-white'>Login</Link>
                 }

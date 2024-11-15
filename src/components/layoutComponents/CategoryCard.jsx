@@ -1,5 +1,6 @@
 import React from "react";
 import { FaShareAlt, FaStar, FaEye } from 'react-icons/fa';
+import { Link } from "react-router-dom";
 
 const CategoryCard = ({ singleNews }) => {
     return (
@@ -30,7 +31,7 @@ const CategoryCard = ({ singleNews }) => {
                 <p className="text-sm text-gray-600 line-clamp-3">
                     {singleNews.details}
                 </p>
-                <a href="#" className="text-blue-500 font-semibold">Read More</a>
+                <Link to={`/news/${singleNews._id}`} className="text-blue-500 font-semibold">Read More</Link>
             </div>
 
             <div className="card-footer flex items-center justify-between p-4 border-t">
